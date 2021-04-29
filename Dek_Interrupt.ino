@@ -35,7 +35,7 @@ public:
 
     if ((currentMillis - previousMillis >= stepDelay))
     {
-      Serial.println(previousGuideState);
+      //Serial.println(previousGuideState);
 
       switch (previousGuideState) {
       case 0:
@@ -117,25 +117,24 @@ void setup()
   pinMode(LED_BUILTIN, OUTPUT);
 
   Serial.begin(115200);
-
-  dekatronStep Dek15(63, 62, 61, true, 5); //setup physical pins here. In this case 63 and 62 are G1 and G2. The index is 61.
-  dekatronStep Dek14(66, 65, 64, true, 10);
-  dekatronStep Dek13(69, 68, 67, true, 15);
-  dekatronStep Dek12(34, 38, 36, true, 20);
-  dekatronStep Dek11(40, 42, 46, true, 30);
-  dekatronStep Dek10(41, 45, 43, true, 40);
-  dekatronStep Dek9(35, 39, 37, true, 50);
-  dekatronStep Dek8(29, 31, 33, true, 60);
-  dekatronStep Dek7(25, 23, 27, true, 70);
-  dekatronStep Dek6(26, 24, 22, true, 80);
-
-  dekatronStep Dek5(30, 32, 28, true, 1);
-  dekatronStep Dek4(3, 4, 2, true, 1);
-  dekatronStep Dek3(6, 7, 5, true, 2);
-  dekatronStep Dek2(9, 10, 12, true, 2);
-  dekatronStep Dek1(12, 13, 11, true, 2);
-
 }
+
+dekatronStep Dek15(63, 62, 61, true, 5); //setup physical pins here. In this case 63 and 62 are G1 and G2. The index is 61.
+dekatronStep Dek14(66, 65, 64, true, 10);
+dekatronStep Dek13(69, 68, 67, true, 15);
+dekatronStep Dek12(34, 38, 36, true, 20);
+dekatronStep Dek11(40, 42, 46, true, 30);
+dekatronStep Dek10(41, 45, 43, true, 40);
+dekatronStep Dek9(35, 39, 37, true, 50);
+dekatronStep Dek8(29, 31, 33, true, 60);
+dekatronStep Dek7(25, 23, 27, true, 70);
+dekatronStep Dek6(26, 24, 22, true, 80);
+dekatronStep Dek5(30, 32, 28, true, 1);
+dekatronStep Dek4(3, 4, 2, true, 1);
+dekatronStep Dek3(6, 7, 5, true, 2);
+dekatronStep Dek2(9, 10, 12, true, 2);
+dekatronStep Dek1(12, 13, 11, true, 2);
+
 
 // Interrupt is called once a millisecond
 ISR(TIMER1_COMPA_vect)
