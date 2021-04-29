@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Dek_Interrupt.ino" />
+    <None Include="Dek_Interrupt2.ino" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="__vm\.Dek_Interrupt.vsarduino.h">
+    <ClInclude Include="__vm\.Dek_Interrupt2.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
