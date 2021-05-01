@@ -77,6 +77,7 @@ public:
 
 	}
 	
+	int pinCount=0;
 
 	void updateIndex(unsigned long currentMillis) {
 		
@@ -90,10 +91,11 @@ public:
 			
 		{
 			// ignore time.
-			if (millis() - indexHighTime >= ignoreTime)
-				
-				//pinCount++;
-				Serial.println(DekNumber);
+			//if (millis() - indexHighTime >= ignoreTime) // does not really seem to be needed.
+			
+			pinCount++;
+			
+			Serial.println(DekNumber,pinCount);
 
 			{
 				indexHighTime = currentMillis;  // when index was high
@@ -111,15 +113,16 @@ public:
 			}  // end if ignore time up
 			
 		}  // end of state change
+
 		sei(); // allow interrupts
 	}
 	
-	//cli(); // stop interrupts
+	
 	//index ignore timout settings.
 	byte oldIndexState = HIGH;
-	const unsigned long ignoreTime = 5;  // milliseconds
+	//const unsigned long ignoreTime = 5;  // milliseconds
 	unsigned long indexHighTime;  // when the index last changed state
-	//sei(); // allow interrupts
+	
 };
 
 
@@ -143,6 +146,8 @@ void setup()
 	sei(); // allow interrupts
 
 	pinMode(LED_BUILTIN, OUTPUT);
+	
+	
 
 	Serial.begin(115200);
 
@@ -154,10 +159,10 @@ void setup()
 //setup physical pins here. 
 //In this case 63 and 62 are G1 and G2. The index is 61.
 dekatronStep Dek1(1, 12, 13, 11, true, 5);
-dekatronStep Dek2(2, 9, 10, 8, true, 50);
-dekatronStep Dek3(3, 6, 7, 5, true, 100);
-dekatronStep Dek4(4, 3, 4, 2, true, 200);
-dekatronStep Dek5(5, 30, 32, 28, true, 300);
+dekatronStep Dek2(2, 9, 10, 8, true, 15);
+dekatronStep Dek3(3, 6, 7, 5, true, 50);
+dekatronStep Dek4(4, 3, 4, 2, true, 100);
+dekatronStep Dek5(5, 30, 32, 28, true, 200);
 dekatronStep Dek6(6, 26, 24, 22, true, 400);
 dekatronStep Dek7(7, 25, 23, 27, true, 500);
 dekatronStep Dek8(8, 29, 31, 33, true, 600); // fault in hardware
