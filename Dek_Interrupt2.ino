@@ -160,16 +160,16 @@ void setup()
 //30 pins on deks
 // Class		Object
 //setup physical pins here. In this case 63 and 62 are G1 and G2. The index is 61.
-dekatronStep Dek15(63, 62, 61, true, 100); 
-dekatronStep Dek14(66, 65, 64, true, 100);
-dekatronStep Dek13(69, 68, 67, true, 100);
-dekatronStep Dek12(34, 38, 36, true, 100);
-dekatronStep Dek11(40, 42, 46, true, 100);
-dekatronStep Dek10(41, 45, 43, true, 100);
-dekatronStep Dek9(35, 39, 37, true, 100);
-dekatronStep Dek8(29, 31, 33, true, 100);
-dekatronStep Dek7(25, 23, 27, true, 100);
-dekatronStep Dek6(26, 24, 22, true, 100);
+dekatronStep Dek15(63, 62, 61, true, 50); 
+dekatronStep Dek14(66, 65, 64, true, 50);
+dekatronStep Dek13(69, 68, 67, true, 50);
+dekatronStep Dek12(34, 38, 36, true, 50);
+dekatronStep Dek11(40, 42, 44, true, 50);
+dekatronStep Dek10(41, 45, 43, true, 50);
+dekatronStep Dek9(35, 39, 37, true, 50);
+dekatronStep Dek8(29, 31, 33, true, 50);
+dekatronStep Dek7(25, 23, 27, true, 50);
+dekatronStep Dek6(26, 24, 22, true, 50);
 
 //not connected
 dekatronStep Dek5(30, 32, 28, true, 100);
@@ -191,15 +191,16 @@ ISR(TIMER1_COMPA_vect)
 	Dek11.updateStep(currentMillis);
 	Dek10.updateStep(currentMillis);
 	Dek9.updateStep(currentMillis);
-	Dek8.updateStep(currentMillis);
+	//Dek8.updateStep(currentMillis);
 	Dek7.updateStep(currentMillis);
 	Dek6.updateStep(currentMillis);
+	/*
 	Dek5.updateStep(currentMillis);
 	Dek4.updateStep(currentMillis);
 	Dek3.updateStep(currentMillis);
 	Dek2.updateStep(currentMillis);
 	Dek1.updateStep(currentMillis);
-
+	*/
 	//updateIndex(currentMillis);
 }
 
