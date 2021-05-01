@@ -16,9 +16,9 @@ public:
 		Guide1 = pin1;
 		Guide2 = pin2;
 		Index = pin3;
-		stepDelay = sDelay;
 		clockwise = direction;
-
+		stepDelay = sDelay;
+		
 		pinMode(Guide1, OUTPUT);
 		pinMode(Guide2, OUTPUT);
 		pinMode(Index, INPUT);
@@ -79,54 +79,20 @@ public:
 				break;
 			} // end of switch case
 
-			
-			  
-			  // see if Index is High or Low
-			byte indexState = digitalRead(Index);
-
-			// has index state changed since last time?
-			if (indexState != oldIndexState)
-			{
-				// ignore time.
-				if (millis() - indexHighTime >= ignoreTime)
-				{
-					indexHighTime = currentMillis;  // when index was high
-					oldIndexState = indexState;  // remember for next time 
-
-					if ((indexState == HIGH) && (clockwise == false))
-					{
-						clockwise = true;
-						//Serial.println("Clockwise");
-						//Serial.println("index high");
-
-					}
-					else if (((indexState == HIGH)) && (clockwise == true))
-					{
-						clockwise = false;
-						//Serial.println("Counter Clockwise");
-						//Serial.println("index low");
-
-
-					}
-
-				}  // end if ignore time up
-
-
-			}  // end of state change
-
 		}
 
 
 	}
 	
 
-	//index ignore timout settings.
-	byte oldIndexState = HIGH;
-	const unsigned long ignoreTime = 5;  // milliseconds
-	unsigned long indexHighTime;  // when the index last changed state
+	
 	
 };
 
+//index ignore timout settings.
+byte oldIndexState = HIGH;
+const unsigned long ignoreTime = 5;  // milliseconds
+unsigned long indexHighTime;  // when the index last changed state
 
 
 void setup()
@@ -190,9 +156,45 @@ ISR(TIMER1_COMPA_vect)
 	Dek13.updateStep(currentMillis);
 	Dek14.updateStep(currentMillis);
 	Dek15.updateStep(currentMillis);
-	//updateIndex(currentMillis);
+	updateIndex(currentMillis);
 }
 
+void updateIndex(unsigned long currentMillis) {
+
+	// see if Index is High or Low
+	byte indexState = digitalRead(Dek6.Index);
+
+	// has index state changed since last time?
+	if (indexState != oldIndexState)
+	{
+		// ignore time.
+		if (millis() - indexHighTime >= ignoreTime)
+		{
+			indexHighTime = currentMillis;  // when index was high
+			oldIndexState = indexState;  // remember for next time 
+
+			if ((indexState == HIGH) && (Dek7.clockwise == false))
+			{
+				Dek7.clockwise = true;
+				//Serial.println("Clockwise");
+				//Serial.println("index high");
+
+			}
+			else if (((indexState == HIGH)) && (Dek7.clockwise == true))
+			{
+				Dek7.clockwise = false;
+				//Serial.println("Counter Clockwise");
+				//Serial.println("index low");
+
+
+			}
+
+		}  // end if ignore time up
+
+
+	}  // end of state change
+
+}
 
 
 
