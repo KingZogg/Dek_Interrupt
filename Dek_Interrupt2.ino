@@ -29,9 +29,7 @@ public:
 
 	void updateStep(unsigned long currentMillis)
 	{
-		//Delay needed if there is not enough delay in the loop when calling.
-		// will need adjusting depending on processor speed. This is runing at 16mHz.
-		delayMicroseconds(20);
+		cli(); // stop interrupts
 		
 		if ((currentMillis - previousMillis >= stepDelay))
 		{
@@ -73,20 +71,20 @@ public:
 				previousMillis = currentMillis;
 				break;
 			} // end of switch case
-
+			
 		}
-
+		sei(); // allow interrupts
 
 	}
 	
 
 	void updateIndex(unsigned long currentMillis) {
-
+		
+		cli(); // stop interrupts
+		
 		// see if Index is High or Low
 		byte indexState = digitalRead(Index);
 		
-	
-
 		// has index state changed since last time?
 		if (indexState != oldIndexState)
 			
@@ -111,15 +109,17 @@ public:
 				}
 				
 			}  // end if ignore time up
+			
 		}  // end of state change
-
+		sei(); // allow interrupts
 	}
 	
+	//cli(); // stop interrupts
 	//index ignore timout settings.
 	byte oldIndexState = HIGH;
 	const unsigned long ignoreTime = 5;  // milliseconds
 	unsigned long indexHighTime;  // when the index last changed state
-	
+	//sei(); // allow interrupts
 };
 
 
@@ -149,33 +149,37 @@ void setup()
 		
 }
 
-//30 pins on deks
+//30 pins on deks ?
 // Class		Object
 //setup physical pins here. 
 //In this case 63 and 62 are G1 and G2. The index is 61.
-dekatronStep Dek1(1, 12, 13, 11, true, 50);
+dekatronStep Dek1(1, 12, 13, 11, true, 5);
 dekatronStep Dek2(2, 9, 10, 8, true, 50);
-dekatronStep Dek3(3, 6, 7, 5, true, 5000);
-dekatronStep Dek4(4, 3, 4, 2, true, 5000);
-dekatronStep Dek5(5, 30, 32, 28, true, 5000);
-dekatronStep Dek6(6, 26, 24, 22, true, 5000);
-dekatronStep Dek7(7, 25, 23, 27, true, 5000);
-dekatronStep Dek8(8, 29, 31, 33, true, 5000); // fault in hardware
-dekatronStep Dek9(9, 35, 39, 37, true, 5000);
-dekatronStep Dek10(10, 41, 45, 43, true, 5000);
+dekatronStep Dek3(3, 6, 7, 5, true, 100);
+dekatronStep Dek4(4, 3, 4, 2, true, 200);
+dekatronStep Dek5(5, 30, 32, 28, true, 300);
+dekatronStep Dek6(6, 26, 24, 22, true, 400);
+dekatronStep Dek7(7, 25, 23, 27, true, 500);
+dekatronStep Dek8(8, 29, 31, 33, true, 600); // fault in hardware
+dekatronStep Dek9(9, 35, 39, 37, true, 700);
+dekatronStep Dek10(10, 41, 45, 43, true, 800);
 
 //not connected
-dekatronStep Dek11(11, 40, 42, 44, true, 50);
-dekatronStep Dek12(12, 34, 38, 36, true, 50);
-dekatronStep Dek13(13, 69, 68, 67, true, 50);
-dekatronStep Dek14(14, 66, 65, 64, true, 50);
-dekatronStep Dek15(15, 63, 62, 61, true, 50);
+dekatronStep Dek11(11, 40, 42, 44, true, 900);
+dekatronStep Dek12(12, 34, 38, 36, true, 1000);
+dekatronStep Dek13(13, 69, 68, 67, true, 1100);
+dekatronStep Dek14(14, 66, 65, 64, true, 1200);
+dekatronStep Dek15(15, 63, 62, 61, true, 1300);
 
 
 // Interrupt is called once a millisecond
 ISR(TIMER1_COMPA_vect)
 {
 	unsigned long currentMillis = millis();
+	
+	//Delay needed if there is not enough delay in the loop when calling.
+	// will need adjusting depending on processor speed. This is runing at 16mHz.
+	//delayMicroseconds(1);
 	
 	Dek1.updateStep(currentMillis);
 	Dek1.updateIndex(currentMillis);
@@ -208,13 +212,24 @@ ISR(TIMER1_COMPA_vect)
 	Dek10.updateIndex(currentMillis);
 
 	//not connected
+	/*
 	Dek11.updateStep(currentMillis);
+	Dek11.updateIndex(currentMillis);
+
 	Dek12.updateStep(currentMillis);
+	Dek12.updateIndex(currentMillis);
+
 	Dek13.updateStep(currentMillis);
+	Dek13.updateIndex(currentMillis);
+
 	Dek14.updateStep(currentMillis);
+	Dek14.updateIndex(currentMillis);
+
 	Dek15.updateStep(currentMillis);
-	
+	Dek15.updateIndex(currentMillis);
+	*/
 }
+
 
 
 
