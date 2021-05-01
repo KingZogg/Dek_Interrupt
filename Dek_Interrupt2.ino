@@ -129,12 +129,6 @@ public:
 
 
 
-
-
-
-
-
-
 void setup()
 {
 	// TIMER 1 for interrupt frequency 2000 Hz:
@@ -154,53 +148,48 @@ void setup()
 
 	pinMode(LED_BUILTIN, OUTPUT);
 
-	Serial.begin(115200);
+	//Serial.begin(115200);
 }
 
 //30 pins on deks
 // Class		Object
 //setup physical pins here. In this case 63 and 62 are G1 and G2. The index is 61.
-dekatronStep Dek15(63, 62, 61, true, 50); 
-dekatronStep Dek14(66, 65, 64, true, 50);
-dekatronStep Dek13(69, 68, 67, true, 50);
-dekatronStep Dek12(34, 38, 36, true, 50);
-dekatronStep Dek11(40, 42, 44, true, 50);
-dekatronStep Dek10(41, 45, 43, true, 50);
-dekatronStep Dek9(35, 39, 37, true, 50);
-dekatronStep Dek8(29, 31, 33, true, 50);
-dekatronStep Dek7(25, 23, 27, true, 50);
+dekatronStep Dek1(12, 13, 11, true, 50);
+dekatronStep Dek2(9, 10, 8, true, 50);
+dekatronStep Dek3(6, 7, 5, true, 50);
+dekatronStep Dek4(3, 4, 2, true, 50);
+dekatronStep Dek5(30, 32, 28, true, 50);
 dekatronStep Dek6(26, 24, 22, true, 50);
-
-//not connected
-dekatronStep Dek5(30, 32, 28, true, 100);
-dekatronStep Dek4(3, 4, 2, true, 100);
-dekatronStep Dek3(6, 7, 5, true, 100);
-dekatronStep Dek2(9, 10, 12, true, 100);
-dekatronStep Dek1(12, 13, 11, true, 100);
+dekatronStep Dek7(25, 23, 27, true, 50);
+dekatronStep Dek8(29, 31, 33, true, 50);
+dekatronStep Dek9(35, 39, 37, true, 50);
+dekatronStep Dek10(41, 45, 43, true, 50);
+dekatronStep Dek11(40, 42, 44, true, 50);
+dekatronStep Dek12(34, 38, 36, true, 50);
+dekatronStep Dek13(69, 68, 67, true, 50);
+dekatronStep Dek14(66, 65, 64, true, 50);
+dekatronStep Dek15(63, 62, 61, true, 50); 
 
 
 // Interrupt is called once a millisecond
 ISR(TIMER1_COMPA_vect)
 {
 	unsigned long currentMillis = millis();
-
-	Dek15.updateStep(currentMillis);
-	Dek14.updateStep(currentMillis);
-	Dek13.updateStep(currentMillis);
-	Dek12.updateStep(currentMillis);
-	Dek11.updateStep(currentMillis);
-	Dek10.updateStep(currentMillis);
-	Dek9.updateStep(currentMillis);
-	//Dek8.updateStep(currentMillis);
-	Dek7.updateStep(currentMillis);
-	Dek6.updateStep(currentMillis);
-	/*
-	Dek5.updateStep(currentMillis);
-	Dek4.updateStep(currentMillis);
-	Dek3.updateStep(currentMillis);
-	Dek2.updateStep(currentMillis);
 	Dek1.updateStep(currentMillis);
-	*/
+	Dek2.updateStep(currentMillis);
+	Dek3.updateStep(currentMillis);
+	Dek4.updateStep(currentMillis);
+	Dek5.updateStep(currentMillis);
+	Dek6.updateStep(currentMillis);
+	Dek7.updateStep(currentMillis);
+	//Dek8.updateStep(currentMillis); // problem with hardware
+	Dek9.updateStep(currentMillis);
+	Dek10.updateStep(currentMillis);
+	Dek11.updateStep(currentMillis);
+	Dek12.updateStep(currentMillis);
+	Dek13.updateStep(currentMillis);
+	Dek14.updateStep(currentMillis);
+	Dek15.updateStep(currentMillis);
 	//updateIndex(currentMillis);
 }
 
