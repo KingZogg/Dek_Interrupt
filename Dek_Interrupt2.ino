@@ -11,7 +11,7 @@ public:
 	int stepDelay;
 	bool clockwise;
 	unsigned long previousMillis;
-	
+
 
 public:
 	dekatronStep(int DekNum, int pinCnt, int pin1, int pin2, int pin3, bool direction, int sDelay)  //Guide1, Guide2, Index,  Direction, StepDelay
@@ -29,27 +29,27 @@ public:
 		pinMode(Index, INPUT);
 	}
 
-	void updateStep()
-		//void updateStep(unsigned long currentMillis)
+	//void updateStep()
+	void updateStep(unsigned long currentMillis)
 	{
 		cli(); // stop interrupts
-		
+
 		//delay(stepDelay);	
 
 
-		//if ((currentMillis - previousMillis >= stepDelay))
+		if ((currentMillis - previousMillis >= stepDelay))
 		//if (pinCount > 0)
 		//Serial.println(previousGuideState);
-		
-		
-		
+
+
+
 		{
 			switch (previousGuideState) {
 			case 0:
 				previousGuideState = 1;
 				digitalWrite(Guide1, LOW);
 				digitalWrite(Guide2, LOW);
-				//previousMillis = currentMillis;
+				previousMillis = currentMillis;
 				break;
 
 			case 1:
@@ -64,7 +64,7 @@ public:
 					digitalWrite(Guide1, LOW);
 					digitalWrite(Guide2, HIGH);
 				}
-				//previousMillis = currentMillis;
+				previousMillis = currentMillis;
 				break;
 
 			case 2:
@@ -79,10 +79,10 @@ public:
 					digitalWrite(Guide1, HIGH);
 					digitalWrite(Guide2, LOW);
 				}
-				//previousMillis = currentMillis;
+				previousMillis = currentMillis;
 				break;
 			} // end of switch case
-			
+
 		}
 		sei(); // allow interrupts
 		pinCount++;
@@ -95,17 +95,17 @@ public:
 
 		//Serial.println(pinCount);
 	}
-	
-	
+
+
 
 	//void updateIndex(unsigned long currentMillis) {
 	void updateIndex() {
-		
+
 		cli(); // stop interrupts
-		
+
 		// see if Index is High or Low
 		byte indexState = digitalRead(Index);
-		
+
 		// has index state changed since last time?
 		if (indexState)
 			//if (indexState != oldIndexState)
@@ -113,9 +113,9 @@ public:
 		{
 			// ignore time.
 			//if (millis() - indexHighTime >= ignoreTime) // does not really seem to be needed.
-	
 
-			
+
+
 			{
 				//indexHighTime = currentMillis;  // when index was high
 				//oldIndexState = indexState;  // remember for next time 
@@ -128,20 +128,20 @@ public:
 				{
 					clockwise = false;
 				}
-				
+
 			}  // end if ignore time up
-			
+
 		}  // end of state change
 
 		sei(); // allow interrupts
 	}
-	
-	
+
+
 	//index ignore timout settings.
 	//byte oldIndexState = HIGH;
 	//const unsigned long ignoreTime = 5;  // milliseconds
 	//unsigned long indexHighTime;  // when the index last changed state
-	
+
 };
 
 
@@ -165,12 +165,12 @@ void setup()
 	sei(); // allow interrupts
 
 	pinMode(LED_BUILTIN, OUTPUT);
-	
-	
+
+
 
 	Serial.begin(115200);
 
-		
+
 }
 
 //30 pins on deks ?
@@ -208,32 +208,32 @@ ISR(TIMER1_COMPA_vect)
 
 
 void loop() {
-	//unsigned long currentMillis = millis();
+	unsigned long currentMillis = millis();
 
 	//Delay needed if there is not enough delay in the loop when calling.
 	// will need adjusting depending on processor speed. This is runing at 16mHz.
 	delayMicroseconds(80);
 
-	Dek1.updateStep();
-	delay(10);
-		
-	Dek2.updateStep();
-		
-	Dek3.updateStep();
-	
-	Dek4.updateStep();
-	
-	Dek5.updateStep();
-	
-	Dek6.updateStep();
-	
-	Dek7.updateStep();
-	
+	Dek1.updateStep(currentMillis);
+	//delay(10);
+
+	Dek2.updateStep(currentMillis);
+
+	Dek3.updateStep(currentMillis);
+
+	Dek4.updateStep(currentMillis);
+
+	Dek5.updateStep(currentMillis);
+
+	Dek6.updateStep(currentMillis);
+
+	Dek7.updateStep(currentMillis);
+
 	//Dek8.updateStep(currentMillis); // problem with hardware
 
-	Dek9.updateStep();
-	
-	Dek10.updateStep();
+	Dek9.updateStep(currentMillis);
+
+	Dek10.updateStep(currentMillis);
 
 	Dek1.updateIndex();
 
@@ -273,5 +273,5 @@ void loop() {
 	Dek15.updateStep(currentMillis);
 	Dek15.updateIndex(currentMillis);
 	*/
-	
+
 }
