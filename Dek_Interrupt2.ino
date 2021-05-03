@@ -32,16 +32,23 @@ public:
 	//void updateStep()
 	void updateStep(unsigned long currentMillis)
 	{
-		cli(); // stop interrupts
+		//cli(); // stop interrupts
 
-		//delay(stepDelay);	
+
+
+
+
+
+
+
+
+
+
 
 
 		if ((currentMillis - previousMillis >= stepDelay))
 		//if (pinCount > 0)
 		//Serial.println(previousGuideState);
-
-
 
 		{
 			switch (previousGuideState) {
@@ -84,8 +91,12 @@ public:
 			} // end of switch case
 
 		}
-		sei(); // allow interrupts
+		//sei(); // allow interrupts
 		pinCount++;
+
+
+
+
 
 
 
@@ -105,16 +116,17 @@ public:
 
 		// see if Index is High or Low
 		byte indexState = digitalRead(Index);
+		
 
 		// has index state changed since last time?
 		if (indexState)
+		//	Serial.println(indexState);
+
 			//if (indexState != oldIndexState)
 			pinCount = 0;
 		{
 			// ignore time.
 			//if (millis() - indexHighTime >= ignoreTime) // does not really seem to be needed.
-
-
 
 			{
 				//indexHighTime = currentMillis;  // when index was high
@@ -177,23 +189,23 @@ void setup()
 // Class		Object
 //setup physical pins here. 
 //In this case 63 and 62 are G1 and G2. The index is 61.
-dekatronStep Dek1(1, 0, 12, 13, 11, true, 500);
-dekatronStep Dek2(2, 0, 9, 10, 8, true, 15);
-dekatronStep Dek3(3, 0, 6, 7, 5, true, 50);
-dekatronStep Dek4(4, 0, 3, 4, 2, true, 100);
-dekatronStep Dek5(5, 0, 30, 32, 28, true, 200);
-dekatronStep Dek6(6, 0, 26, 24, 22, true, 400);
-dekatronStep Dek7(7, 0, 25, 23, 27, true, 500);
-dekatronStep Dek8(8, 0, 29, 31, 33, true, 600); // fault in hardware
-dekatronStep Dek9(9, 0, 35, 39, 37, true, 700);
-dekatronStep Dek10(10, 0, 41, 45, 43, true, 800);
+dekatronStep Dek1(1, 0, 12, 13, 11, true, 10);
+dekatronStep Dek2(2, 0, 9, 10, 8, true, 500);
+dekatronStep Dek3(3, 0, 6, 7, 5, true, 1000);
+dekatronStep Dek4(4, 0, 3, 4, 2, true, 2000);
+dekatronStep Dek5(5, 0, 30, 32, 28, true, 5000);
+dekatronStep Dek6(6, 0, 26, 24, 22, true, 6000);
+dekatronStep Dek7(7, 0, 25, 23, 27, true, 7000);
+//dekatronStep Dek8(8, 0, 29, 31, 33, true, 600); // fault in hardware
+dekatronStep Dek9(9, 0, 35, 39, 37, true, 8000);
+dekatronStep Dek10(10, 0, 41, 45, 43, true, 9000);
 
 //not connected
-dekatronStep Dek11(11, 0, 40, 42, 44, true, 900);
-dekatronStep Dek12(12, 0, 34, 38, 36, true, 1000);
-dekatronStep Dek13(13, 0, 69, 68, 67, true, 1100);
-dekatronStep Dek14(14, 0, 66, 65, 64, true, 1200);
-dekatronStep Dek15(15, 0, 63, 62, 61, true, 1300);
+//dekatronStep Dek11(11, 0, 40, 42, 44, true, 900);
+//dekatronStep Dek12(12, 0, 34, 38, 36, true, 1000);
+//dekatronStep Dek13(13, 0, 69, 68, 67, true, 1100);
+//dekatronStep Dek14(14, 0, 66, 65, 64, true, 1200);
+//dekatronStep Dek15(15, 0, 63, 62, 61, true, 1300);
 
 
 // Interrupt is called once a millisecond
@@ -203,75 +215,42 @@ ISR(TIMER1_COMPA_vect)
 }
 
 
-
-
-
-
 void loop() {
 	unsigned long currentMillis = millis();
 
 	//Delay needed if there is not enough delay in the loop when calling.
 	// will need adjusting depending on processor speed. This is runing at 16mHz.
-	delayMicroseconds(80);
+//	delayMicroseconds(80);
+	
 
 	Dek1.updateStep(currentMillis);
-	//delay(10);
+//	Dek1.updateIndex();
 
 	Dek2.updateStep(currentMillis);
-
+//	Dek2.updateIndex();
+		
 	Dek3.updateStep(currentMillis);
+//	Dek3.updateIndex();
 
 	Dek4.updateStep(currentMillis);
-
-	Dek5.updateStep(currentMillis);
-
-	Dek6.updateStep(currentMillis);
-
-	Dek7.updateStep(currentMillis);
-
+//	Dek4.updateIndex();
+	
+//	Dek5.updateStep(currentMillis);
+//	Dek5.updateIndex();
+	
+//	Dek6.updateStep(currentMillis);
+//	Dek6.updateIndex();
+	
+//	Dek7.updateStep(currentMillis);
+//	Dek7.updateIndex();
+	
 	//Dek8.updateStep(currentMillis); // problem with hardware
-
-	Dek9.updateStep(currentMillis);
-
-	Dek10.updateStep(currentMillis);
-
-	Dek1.updateIndex();
-
-	Dek2.updateIndex();
-
-	Dek3.updateIndex();
-
-	Dek4.updateIndex();
-
-	Dek5.updateIndex();
-
-	Dek6.updateIndex();
-
-	Dek7.updateIndex();
-
-	//Dek8.updateStep(currentMillis); // problem with hardware
-
-	Dek9.updateIndex();
-
-	Dek10.updateIndex();
-
-
-	//not connected
-	/*
-	Dek11.updateStep(currentMillis);
-	Dek11.updateIndex(currentMillis);
-
-	Dek12.updateStep(currentMillis);
-	Dek12.updateIndex(currentMillis);
-
-	Dek13.updateStep(currentMillis);
-	Dek13.updateIndex(currentMillis);
-
-	Dek14.updateStep(currentMillis);
-	Dek14.updateIndex(currentMillis);
-
-	Dek15.updateStep(currentMillis);
-	Dek15.updateIndex(currentMillis);
-	*/
+	
+//	Dek9.updateStep(currentMillis);
+//	Dek9.updateIndex();
+	
+//	Dek10.updateStep(currentMillis);
+//	Dek10.updateIndex();
+	
 
 }
