@@ -96,65 +96,55 @@ public:
 
 
 
+			// see if Index is High or Low
+			byte indexState = digitalRead(Index);
 
 
 
-
-		//delay(stepDelay);			
-		//Serial.println(DekNumber);
-		//Serial.println(stepDelay);
-
-		//Serial.println(pinCount);
-	}
-
-
-
-	//void updateIndex(unsigned long currentMillis) {
-	void updateIndex() {
-
-		cli(); // stop interrupts
-
-		// see if Index is High or Low
-		byte indexState = digitalRead(Index);
-		
-
-		// has index state changed since last time?
-		if (indexState)
-		//	Serial.println(indexState);
-
-			//if (indexState != oldIndexState)
-			pinCount = 0;
-		{
-			// ignore time.
-			//if (millis() - indexHighTime >= ignoreTime) // does not really seem to be needed.
-
+			// has index state changed since last time?
+			if (indexState)
+				pinCount = 0;
 			{
-				//indexHighTime = currentMillis;  // when index was high
-				//oldIndexState = indexState;  // remember for next time 
+				//	Serial.println(indexState);
 
-				if ((indexState == HIGH) && (clockwise == false))
+				if (indexState != oldIndexState)
+					
 				{
-					clockwise = true;
-				}
-				else if (((indexState == HIGH)) && (clockwise == true))
-				{
-					clockwise = false;
-				}
-
-			}  // end if ignore time up
-
-		}  // end of state change
-
-		sei(); // allow interrupts
-	}
+					// ignore time.
+					if (millis() - indexHighTime >= ignoreTime) // does not really seem to be needed.
 
 
-	//index ignore timout settings.
-	//byte oldIndexState = HIGH;
-	//const unsigned long ignoreTime = 5;  // milliseconds
-	//unsigned long indexHighTime;  // when the index last changed state
 
-};
+
+					{
+						indexHighTime = currentMillis;  // when index was high
+						oldIndexState = indexState;  // remember for next time 
+
+						if ((indexState == 1) && (clockwise == false))
+						{
+							clockwise = true;
+						}
+						else if (((indexState == 1)) && (clockwise == true))
+						{
+							clockwise = false;
+						}
+
+					}  // end if ignore time up
+
+				}  // end of state change
+
+			}
+		}
+
+
+		//index ignore timout settings.
+		byte oldIndexState = 0;
+		const unsigned long ignoreTime = 5;  // milliseconds
+		unsigned long indexHighTime;  // when the index last changed state
+	};
+
+
+
 
 
 
@@ -224,16 +214,16 @@ void loop() {
 	
 
 	Dek1.updateStep(currentMillis);
-//	Dek1.updateIndex();
+//	Dek1.updateIndex(currentMillis);
 
 	Dek2.updateStep(currentMillis);
-//	Dek2.updateIndex();
+//	Dek2.updateIndex(currentMillis);
 		
-	Dek3.updateStep(currentMillis);
-//	Dek3.updateIndex();
+//	Dek3.updateStep(currentMillis);
+//	Dek3.updateIndex(currentMillis);
 
-	Dek4.updateStep(currentMillis);
-//	Dek4.updateIndex();
+//	Dek4.updateStep(currentMillis);
+//	Dek4.updateIndex(currentMillis);
 	
 //	Dek5.updateStep(currentMillis);
 //	Dek5.updateIndex();
