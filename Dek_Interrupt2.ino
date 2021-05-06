@@ -32,10 +32,10 @@ public:
 
 	void updateStep(unsigned long currentMillis, unsigned long stepDelay)
 	{
-		cli(); // stop interrupts
-		
+		noInterrupts();
+
 		if ((currentMillis - previousMillis >= stepDelay))
-	
+
 		{
 			switch (previousGuideState) {
 			case 0:
@@ -77,7 +77,7 @@ public:
 			}
 
 		}
-		
+
 		pinCount++;
 
 
@@ -87,7 +87,7 @@ public:
 		// has index state changed since last time?
 		if (indexState)
 			if (indexState != oldIndexState)
-			pinCount = 0;
+				pinCount = 0;
 		{
 			// ignore time.
 			if (millis() - indexHighTime >= ignoreTime) // does not really seem to be needed.
@@ -111,7 +111,7 @@ public:
 
 		}  // end of state change
 
-		sei(); // allow interrupts
+		interrupts();
 	}
 
 
@@ -121,35 +121,32 @@ public:
 	unsigned long indexHighTime;  // when the index last changed state
 
 };
-
-
-void setup()
+void setup() {
+	setupTimer1();
+}
+void setupTimer1()
 {
-	// TIMER 1 for interrupt frequency 2000 Hz:
-	cli(); // stop interrupts
-	TCCR1A = 0; // set entire TCCR1A register to 0
-	TCCR1B = 0; // same for TCCR1B
-	TCNT1 = 0; // initialize counter value to 0
-		   // set compare match register for 2000 Hz increments
-	OCR1A = 7999; // = 16000000 / (1 * 2000) - 1 (must be <65536)
-			// turn on CTC mode
+	noInterrupts();
+	// Clear registers
+	TCCR1A = 0;
+	TCCR1B = 0;
+	TCNT1 = 0;
+
+	// 5000 Hz (16000000/((49+1)*64))
+	OCR1A = 49;
+	// CTC
 	TCCR1B |= (1 << WGM12);
-	// Set CS12, CS11 and CS10 bits for 1 prescaler
-	TCCR1B |= (0 << CS12) | (0 << CS11) | (1 << CS10);
-	// enable timer compare interrupt
+	// Prescaler 64
+	TCCR1B |= (1 << CS11) | (1 << CS10);
+	// Output Compare Match A Interrupt Enable
 	TIMSK1 |= (1 << OCIE1A);
-	sei(); // allow interrupts
-
-	pinMode(LED_BUILTIN, OUTPUT);
-
-
-
-	Serial.begin(115200);
-
-
+	interrupts();
+	   
+//	Serial.begin(115200);
+	
 }
 
-//30 pins on deks ?
+//30 pins on deks
 // Class		Object
 //setup physical pins here. 
 //In this case 63 and 62 are G1 and G2. The index is 61.
@@ -175,13 +172,6 @@ dekatronStep Dek15(15, 0, 63, 62, 61, true, 0);
 // Interrupt is called once a millisecond
 ISR(TIMER1_COMPA_vect)
 {
-
-}
-
-
-
-
-void loop() {
 	unsigned long currentMillis = millis();
 
 	Dek1.updateStep(currentMillis, 5);
@@ -194,11 +184,18 @@ void loop() {
 	Dek8.updateStep(currentMillis, 100); // problem with hardware
 	Dek9.updateStep(currentMillis, 1000);
 	Dek10.updateStep(currentMillis, 50);
-	
+
 	Dek11.updateStep(currentMillis, 1);
 	Dek12.updateStep(currentMillis, 1);
 	Dek13.updateStep(currentMillis, 1);
 	Dek14.updateStep(currentMillis, 1);
 	Dek15.updateStep(currentMillis, 1);
+}
+
+
+
+
+void loop() {
+	
 
 }
