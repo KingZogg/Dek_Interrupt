@@ -32,7 +32,7 @@ public:
 
 	void updateStep(unsigned long currentMillis, unsigned long stepDelay)
 	{
-		noInterrupts();
+		cli(); // stop interrupts
 
 		if ((currentMillis - previousMillis >= stepDelay))
 
@@ -111,7 +111,7 @@ public:
 
 		}  // end of state change
 
-		interrupts();
+		sei(); // allow interrupts
 	}
 
 
@@ -121,32 +121,35 @@ public:
 	unsigned long indexHighTime;  // when the index last changed state
 
 };
-void setup() {
-	setupTimer1();
-}
-void setupTimer1()
+
+
+void setup()
 {
-	noInterrupts();
-	// Clear registers
-	TCCR1A = 0;
-	TCCR1B = 0;
-	TCNT1 = 0;
-
-	// 5000 Hz (16000000/((49+1)*64))
-	OCR1A = 49;
-	// CTC
+	// TIMER 1 for interrupt frequency 2000 Hz:
+	cli(); // stop interrupts
+	TCCR1A = 0; // set entire TCCR1A register to 0
+	TCCR1B = 0; // same for TCCR1B
+	TCNT1 = 0; // initialize counter value to 0
+		   // set compare match register for 2000 Hz increments
+	OCR1A = 7999; // = 16000000 / (1 * 2000) - 1 (must be <65536)
+			// turn on CTC mode
 	TCCR1B |= (1 << WGM12);
-	// Prescaler 64
-	TCCR1B |= (1 << CS11) | (1 << CS10);
-	// Output Compare Match A Interrupt Enable
+	// Set CS12, CS11 and CS10 bits for 1 prescaler
+	TCCR1B |= (0 << CS12) | (0 << CS11) | (1 << CS10);
+	// enable timer compare interrupt
 	TIMSK1 |= (1 << OCIE1A);
-	interrupts();
-	   
-//	Serial.begin(115200);
-	
+	sei(); // allow interrupts
+
+	pinMode(LED_BUILTIN, OUTPUT);
+
+
+
+	Serial.begin(115200);
+
+
 }
 
-//30 pins on deks
+//30 pins on deks ?
 // Class		Object
 //setup physical pins here. 
 //In this case 63 and 62 are G1 and G2. The index is 61.
@@ -172,10 +175,24 @@ dekatronStep Dek15(15, 0, 63, 62, 61, true, 0);
 // Interrupt is called once a millisecond
 ISR(TIMER1_COMPA_vect)
 {
+
+}
+
+
+
+unsigned long A; 
+void loop() {
 	unsigned long currentMillis = millis();
 
-	Dek1.updateStep(currentMillis, 5);
-	Dek2.updateStep(currentMillis, 10);
+	A = A + 1;
+	Serial.println(A);
+	
+	if (A >= 10000)
+		A = 0;
+
+
+	Dek1.updateStep(currentMillis, 100);
+	Dek2.updateStep(currentMillis, A);
 	Dek3.updateStep(currentMillis, 20);
 	Dek4.updateStep(currentMillis, 30);
 	Dek5.updateStep(currentMillis, 1);
@@ -190,12 +207,5 @@ ISR(TIMER1_COMPA_vect)
 	Dek13.updateStep(currentMillis, 1);
 	Dek14.updateStep(currentMillis, 1);
 	Dek15.updateStep(currentMillis, 1);
-}
-
-
-
-
-void loop() {
-	
 
 }
