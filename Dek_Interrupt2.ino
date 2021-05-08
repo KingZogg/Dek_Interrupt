@@ -180,19 +180,22 @@ ISR(TIMER1_COMPA_vect)
 
 
 
-unsigned long A; 
+
+int count = 1000;
+
+
 void loop() {
 	unsigned long currentMillis = millis();
-
-	A = A + 1;
-	Serial.println(A);
 	
-	if (A >= 10000)
-		A = 0;
-
+	if (count >= 0) { // if counter not finished
+		count = count - 1; // decrease counter
+	}
+	//delay(5000); // wait one second
+	
+	Serial.println(count);
 
 	Dek1.updateStep(currentMillis, 100);
-	Dek2.updateStep(currentMillis, A);
+	Dek2.updateStep(currentMillis, count);
 	Dek3.updateStep(currentMillis, 20);
 	Dek4.updateStep(currentMillis, 30);
 	Dek5.updateStep(currentMillis, 1);
@@ -209,3 +212,4 @@ void loop() {
 	Dek15.updateStep(currentMillis, 1);
 
 }
+
